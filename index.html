@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNDN Gemi İnşaat | Global Savunma ve Denizcilik Çözümleri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        :root {
+            --navy: #001f3f;
+            --silver: #C0C0C0;
+            --accent: #00d2ff;
+            --white: #ffffff;
+            --deep-dark: #02060a;
+        }
+
+        html { scroll-behavior: smooth; }
+        
+           @keyframes boatFloat {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.yard-card i {
+    animation: boatFloat 3s ease-in-out infinite;
+}
+
+          /* Kartların üzerine gelince parlaması */
+.s-card::before, .project-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+    z-index: 1;
+}
+
+.s-card:hover::before, .project-item:hover::before {
+    left: 125%; /* Üzerinden bir ışık geçer gibi olur */
+}
+
+        /* 1. Özel Kaydırma Çubuğu */
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background: var(--navy);
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--navy), var(--accent));
+    border-radius: 10px;
+    border: 3px solid var(--navy);
+}
+
+/* 2. Navigasyon Alt Çizgi Animasyonu */
+.nav-links a {
+    position: relative;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--accent);
+    transition: width 0.3s ease;
+}
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* 3. Proje Kartlarına Cam Efekti (Glassmorphism) */
+.project-info {
+    backdrop-filter: blur(5px);
+    background: rgba(0, 31, 63, 0.7);
+}
+    
+        /* Navigasyon */
+        nav {
+            position: fixed;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            z-index: 1000;
+            background: rgba(0, 31, 63, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo { color: white; font-weight: 800; font-size: 1.8rem; letter-spacing: 3px; text-decoration: none; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            color: white;
+        }
+
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #000; }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; animation: slowZoom 20s infinite alternate; }
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(75deg, rgba(0,31,63,0.9) 0%, rgba(0,31,63,0.4) 50%, rgba(0,31,63,0.2) 100%);
+            z-index: -1;
+        }
+
+        .hero-text h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 25px; text-transform: uppercase; font-weight: 800; }
+        .hero-text p { font-size: 1.1rem; max-width: 650px; font-weight: 300; margin-bottom: 30px; line-height: 1.8; padding-left: 20px; border-left: 4px solid var(--accent); }
+
+        /* Metrics Band */
+        .metrics {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            background: var(--white); padding: 60px 8%; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; z-index: 2;
+        }
+        .metric-item h3 { font-size: 2.5rem; color: var(--navy); margin-bottom: 5px; }
+        .metric-item p { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ÜRETİM VE MÜHENDİSLİK KABİLİYETLERİ */
+        .services { padding: 100px 8%; background: #f9f9f9; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; color: var(--navy); margin-bottom: 15px; }
+
+        .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .s-card { height: 400px; position: relative; overflow: hidden; border-radius: 12px; cursor: pointer; }
+        .s-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .s-card:hover img { transform: scale(1.1); }
+        .s-overlay {
+            position: absolute; bottom: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,31,63,0.9) 20%, transparent);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 35px; color: white;
+        }
+
+        /* YENİ: Projeler (Portfolyo) */
+        .projects-section { padding: 100px 8%; background: #fff; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
+        .project-item { position: relative; height: 350px; overflow: hidden; border-radius: 12px; }
+        .project-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .project-item:hover img { transform: scale(1.1); }
+        .project-info { position: absolute; bottom: 0; padding: 25px; background: linear-gradient(transparent, rgba(0,31,63,0.9)); width: 100%; color: white; }
+
+        /* YENİ: Tersanelerimiz */
+        .yards-section { padding: 100px 8%; background: var(--navy); color: white; }
+        .yard-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
+        .yard-card { background: rgba(255,255,255,0.05); padding: 40px; border-radius: 10px; border-top: 4px solid var(--accent); transition: 0.3s; }
+        .yard-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-10px); }
+        .yard-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; display: block; }
+
+        /* Strateji */
+        /* Strateji Bölümü Güncelleme */
+        .strategy-section { 
+            padding: 100px 8%; 
+            background: linear-gradient(135deg, #f4f7f9 0%, #e9eff5 100%); 
+        }
+
+        .strategy-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+            margin-top: 50px; 
+        }
+
+        .strat-card { 
+            background: white; 
+            padding: 50px 40px; 
+            border-radius: 20px; 
+            border-bottom: 5px solid var(--navy); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strat-card:hover { 
+            transform: translateY(-15px); 
+            border-bottom-color: var(--accent);
+            box-shadow: 0 25px 50px rgba(0,31,63,0.15);
+        }
+
+        .strat-card i {
+            font-size: 3rem;
+            color: var(--navy);
+            margin-bottom: 25px;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .strat-card:hover i {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .strat-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--navy);
+            letter-spacing: 1px;
+            font-weight: 800;
+        }
+
+        .strat-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Kartın köşesine hafif bir numara efekti */
+        .strat-card::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+        /* YENİ: Kariyer (Büyük Şirket Hissiyatı) */
+        .career-banner { padding: 80px 8%; background: linear-gradient(rgba(0,31,63,0.9), rgba(0,31,63,0.9)), url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1920'); background-size: cover; color: white; text-align: center; }
+
+        /* İLETİŞİM FORMU */
+        .contact-section { padding: 100px 8%; background: #fff; }
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .contact-info {
+            background: var(--navy);
+            padding: 50px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-info h2 { font-size: 2rem; margin-bottom: 20px; color: var(--accent); }
+        .info-item { display: flex; align-items: center; margin-bottom: 25px; }
+        .info-item i { font-size: 1.5rem; margin-right: 20px; color: var(--accent); }
+        .info-item a { color: #fff; text-decoration: none; transition: 0.3s; }
+        .info-item a:hover { color: var(--accent); }
+
+        .contact-form { padding: 50px; background: #fdfdfd; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--navy); font-size: 0.9rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+
+        .btn {
+            background: var(--navy); color: white; padding: 18px 40px;
+            text-decoration: none; border-radius: 6px; font-weight: 600;
+            transition: 0.3s; text-transform: uppercase; border: none; cursor: pointer; display: inline-block;
+        }
+        .btn:hover { background: var(--accent); color: var(--navy); }
+
+        /* Footer */
+        footer { background: var(--deep-dark); color: #888; padding: 100px 8% 40px; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 50px; }
+        .footer-grid h4 { color: white; margin-bottom: 20px; }
+        .footer-grid ul { list-style: none; }
+        .footer-grid ul li { margin-bottom: 12px; }
+        .footer-grid ul li a { color: #888; text-decoration: none; transition: 0.3s; font-size: 0.9rem; }
+        .footer-grid ul li a:hover { color: var(--accent); }
+
+        @media (max-width: 968px) {
+            .hero-text h1 { font-size: 2.8rem; }
+            .service-grid, .metrics, .footer-grid, .contact-container, .yard-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">CNDN</a>
+        <div class="nav-links">
+          <a href="kurumsal.html" target="_blank">Kurumsal</a> <a href="#projects">Projeler</a>
+          <a href="#yards">Tersaneler</a>
+          <a href="#solutions">Kabiliyetler</a>
+          <a href="#career">Kariyer</a>
+          <a href="#contact">İletişim</a>
+</div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjJ2c2tlYmFmZHhhbHB5YzFtdXZ1MnI4eWJzaXJwZDQ4ajJlc29laSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Q8m7U0XA3p5o39ZnTQ/giphy.gif" alt="Askeri Gemi Hareketli">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-text">
+            <h1>GELECEĞİN DENİZ <br>GÜCÜNÜ <span style="color: var(--accent);">TASARLIYORUZ</span></h1>
+            <p>Mersin merkezli vizyonumuzla, askeri ve ticari gemi inşaasında ileri teknoloji çözümleri sunan küresel bir mühendislik markasıyız.</p>
+            <a href="#projects" class="btn" style="background: var(--accent); color: var(--navy);">Projelerimizi Keşfedin</a>
+        </div>
+    </section>
+
+    <section class="metrics">
+        <div class="metric-item"><h3>10.000+</h3><p>Hedeflenen İstihdam</p></div>
+        <div class="metric-item"><h3>GLOBAL</h3><p>İhracat Ağı</p></div>
+        <div class="metric-item"><h3>AR-GE</h3><p>Teknik Mükemmeliyet</p></div>
+        <div class="metric-item"><h3>YERLİ</h3><p>Mühendislik Gücü</p></div>
+    </section>
+
+    <section id="projects" class="projects-section">
+        <div class="section-header">
+            <h2>Amiral Projelerimiz</h2>
+            <p>Dünya denizlerinde CNDN imzası taşıyan seçkin platformlar.</p>
+        </div>
+        <div class="project-grid">
+            <div class="project-item">
+                <img src="	https://www.savunmasanayist.com/wp-content/uploads/2025/11/asfat-2-min-scaled.jpg" alt="Savunma">
+                <div class="project-info"><h4>S-2000 Fırkateyn Serisi</h4><p>Askeri Savunma Platformu</p></div>
+            </div>
+            <div class="project-item">
+                <img src="	https://www.denizhaber.net/d/other/deepsea-metro-2-canakkale-bogazindan-gecti_1.jpg" alt="Ticari">
+                <div class="project-info"><h4>DeepSea Kargo Serisi</h4><p>Okyanus Ötesi Ticari Gemi</p></div>
+            </div>
+            <div class="project-item">
+                <img src="	https://www.denizbulten.com/d/other/sancar-ida.jpeg" alt="Teknoloji">
+                <div class="project-info"><h4>Otonom Deniz Aracı</h4><p>İnsansız Deniz Sistemleri</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="yards" class="yards-section">
+        <div class="section-header">
+            <h2 style="color: white;">Operasyonel Merkezlerimiz</h2>
+            <p style="color: #ccc;">Stratejik konumlardaki yüksek kapasiteli üretim üslerimiz.</p>
+        </div>
+        <div class="yard-grid">
+            <div class="yard-card">
+                <i class="fas fa-ship"></i>
+                <h4>Mersin Ana Tersane</h4>
+                <p>Silifke bölgesindeki 250.000 m² alan üzerine kurulu ana üretim hattımız.</p>
+            </div>
+            <div class="yard-card">
+                <i class="fas fa-microchip"></i>
+                <h4>İstanbul Teknoloji Üssü</h4>
+                <p>Tasarım, simülasyon ve otonom sistemler üzerine yoğunlaşan mühendislik ofisimiz.</p>
+            </div>
+            <div class="yard-card">
+                <i class="fas fa-anchor"></i>
+                <h4>Ege Onarım Merkezi</h4>
+                <p>İzmir liman bölgesinde gemi modernizasyonu ve hızlı bakım çözümleri.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="solutions" class="services">
+        <div class="section-header">
+            <h2>Üretim ve Mühendislik Kabiliyetleri</h2>
+            <p>Karmaşık deniz platformlarından tam kapsamlı sistem entegrasyonuna kadar çözümler.</p>
+        </div>
+        <div class="service-grid">
+            <div class="s-card">
+                <img src="https://www.defensenews.com/resizer/v2/FOSF6T3DVRHQTN3WXCFV7QU7DU.jpg?auth=356a4279a61baf7d0d746166a972d895a372074dc098c2a10e09b7ede83fcd60&width=1024&height=682" alt="Savunma">
+                <div class="s-overlay">
+                    <h3>Savunma Sanayii</h3>
+                    <p>Fırkateyn, denizaltı ve destek gemileri üzerine uzmanlaşmış askeri projeler.</p>
+                </div>
+            </div>
+            <div class="s-card">
+                <img src="https://www.sahlojistik.com//resimler/hizmetler/deniznakliye.jpg" alt="Ticari">
+                <div class="s-overlay">
+                    <h3>Ticari Filolar</h3>
+                    <p>Yüksek performanslı feribotlar, tankerler ve ticari nakliye gemileri.</p>
+                </div>
+            </div>
+            <div class="s-card">
+                <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" alt="Mühendislik">
+                <div class="s-overlay">
+                    <h3>Ar-Ge & İnovasyon</h3>
+                    <p>3D modelleme, kompozit gövde üretimi ve sistem entegrasyon çalışmaları.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="strategy" class="strategy-section">
+        <div class="section-header">
+            <h2 style="font-size: 2.8rem; color: var(--navy); font-weight: 800;">Stratejik Genişleme Planı</h2>
+            <div style="width: 80px; height: 4px; background: var(--accent); margin: 20px auto;"></div>
+            <p style="max-width: 700px; margin: 0 auto; color: #666;">Türkiye'nin limanlarından küresel pazarlara uzanan, yerli mühendisliği dünyaya taşıyan vizyoner yol haritamız.</p>
+        </div>
+        
+        <div class="strategy-grid">
+            <div class="strat-card">
+                <i class="fas fa-map-marked-alt"></i>
+                <h4>BÖLGESEL MERKEZLER</h4>
+                <p>Mersin merkezli yapımızı Trabzon, İzmir ve İstanbul tersaneleriyle destekleyerek, Türkiye'nin dört bir yanındaki üretim kapasitemizi senkronize ediyoruz.</p>
+            </div>
+            
+            <div class="strat-card">
+                <i class="fas fa-globe-asia"></i>
+                <h4>ASYA & PASİFİK ODAĞI</h4>
+                <p>Singapur ve Japonya merkezli stratejik ortaklıklarımızla, yüksek teknolojili otonom gemi sistemlerimizi doğu pazarlarına ihraç etmeyi hedefliyoruz.</p>
+            </div>
+            
+            <div class="strat-card">
+                <i class="fas fa-chart-line"></i>
+                <h4>KÜRESEL PAZAR PAYI</h4>
+                <p>2030 vizyonumuz doğrultusunda, Avrupa ve Amerika kıtalarında kuracağımız lojistik üslerle dünya denizcilik liginde ilk 10 üretici arasına giriyoruz.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="career" class="career-banner">
+        <h2>Denizciliğin Geleceğini Birlikte İnşa Edelim</h2>
+        <p style="margin: 20px 0; font-weight: 300;">Yenilikçi projelerde yer almak isteyen mühendisler ve teknisyenler için kapımız her zaman açık.</p>
+        <a href="#contact" class="btn" style="background: var(--accent); color: var(--navy);">BİZE KATILIN</a>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>İletişim Bilgileri</h2>
+                <div class="info-item"><i class="fas fa-map-marker-alt"></i><p>Mersin , Silifke</p></div>
+                <div class="info-item"><i class="fas fa-envelope"></i><p><a href="mailto:info@cndn.com">info@cndn.com</a></p></div>
+                <div class="info-item"><i class="fas fa-phone"></i><p><a href="tel:+903240000000">+90 (324) 000 00 00</a></p></div>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <div class="form-group"><label>Adınız</label><input type="text" placeholder="Ad Soyad" required></div>
+                    <div class="form-group"><label>E-posta</label><input type="email" placeholder="E-posta" required></div>
+                    <div class="form-group"><label>Mesajınız</label><textarea rows="4" placeholder="Mesajınız..."></textarea></div>
+                    <button type="submit" class="btn">Gönder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 20px;">CNDN</h3>
+                <p>Deniz teknolojilerinde lider mühendislik çözümleri sunan global bir kuruluş.</p>
+            </div>
+            <div>
+                <h4>Kurumsal</h4>
+                <ul>
+                    <li><a href="#about">Hakkımızda</a></li>
+                    <li><a href="#projects">Projelerimiz</a></li>
+                    <li><a href="#strategy">Gelecek Vizyonu</a></li>
+                    <li><a href="#career">Kariyer</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Hizmetler</h4>
+                <ul>
+                    <li><a href="#solutions">Askeri Gemi İnşası</a></li>
+                    <li><a href="#solutions">Ticari Filo Çözümleri</a></li>
+                    <li><a href="#solutions">Tasarım & Mühendislik</a></li>
+                    <li><a href="#solutions">Bakım & Onarım</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Sosyal Medya</h4>
+                <div style="display: flex; gap: 15px; margin-top: 10px;">
+                     <a href="https://www.linkedin.com" target="_blank" style="color: white; font-size: 1.2rem; transition: 0.3s;">
+                      <i class="fab fa-linkedin"></i>
+                     </a>
+                    <a href="https://www.instagram.com" target="_blank" style="color: white; font-size: 1.2rem; transition: 0.3s;">
+                     <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://twitter.com" target="_blank" style="color: white; font-size: 1.2rem; transition: 0.3s;">
+                     <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 50px; font-size: 0.8rem; border-top: 1px solid #222; padding-top: 30px;">
+            &copy; 2025 CNDN GEMİ İNŞAAT A.Ş. Tüm Hakları Saklıdır.
+        </div>
+    </footer>
+
+</body>
+</html>
